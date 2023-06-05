@@ -13,8 +13,8 @@ const config = {
 		adapter: adapter(),
 		alias: {
 			...sharedConfig.alias,
-		}
-	}
+		},
+	},
 };
 
 export default config;

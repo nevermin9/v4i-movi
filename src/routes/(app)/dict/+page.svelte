@@ -1,4 +1,7 @@
 <script>
+  /** @type {import('../../../../.svelte-kit/types/src/routes').PageData} */
+  export let data
+
   let letters = {
     E: [
       {
@@ -55,6 +58,7 @@
 <section class="dict-page">
   <div class="dict-page__search-box">
     search
+    {JSON.stringify(data, null, 2)}
   </div>
 
   <div class="dict-page__search-box">
@@ -96,11 +100,11 @@
   //  }
   //
   //}
-  .dict-page {
-    &__s-table-container {
-      width: min(100% - 2rem, 600px);
-      margin-inline: auto;
-    }
-  }
+  //.dict-page {
+  //  &__s-table-container {
+  //    width: min(100% - 2rem, 600px);
+  //    margin-inline: auto;
+  //  }
+  //}
 </style>
 
