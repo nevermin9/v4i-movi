@@ -27,6 +27,7 @@
   },
   "type": "module",
   "dependencies": {
+    "lodash-es": "^4.17.21",
     "pg": "^8.11.0"
   }
 }

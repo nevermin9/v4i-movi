@@ -12,6 +12,6 @@
     </a>
   </nav>
 
-  <div class="flex-1 h-full">
+  <div class="flex-1 h-full p-4">
     <slot/>
   </div>

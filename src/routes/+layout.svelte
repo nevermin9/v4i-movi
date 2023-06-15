@@ -1,9 +1,24 @@
 <script>
   import "$/style/base/1index.scss"
   import {onMount} from 'svelte'
+  import IdbClient from '$lib/utils/idb'
 
-  onMount(() => {
-    console.log ('cached', caches)
+  onMount(async () => {
+    const idbClient = new IdbClient(
+      'v4i-movi',
+      new Map([
+        ['word', {keyPath: 'word'}],
+        ['dictionary', {keyPath: 'name'}],
+        ['card', {keyPath: 'name'}],
+      ])
+    )
+      await idbClient.init()
+    try {
+      await idbClient.insert('word', {word: 'hello', meaning: 'xin chao'})
+    } catch (e) {
+      console.log('inser teeeroror', e)
+    }
+
   })
 
 </script>
