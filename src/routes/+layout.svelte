@@ -12,16 +12,12 @@
         ['card', {keyPath: 'name'}],
       ])
     )
-      await idbClient.init()
-    try {
-      await idbClient.insert('word', {word: 'hello', meaning: 'xin chao'})
-    } catch (e) {
-      console.log('inser teeeroror', e)
-    }
 
+    await idbClient.init()
   })
 
 </script>
+
 
 <slot />
 

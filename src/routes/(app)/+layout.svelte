@@ -1,4 +1,11 @@
-  <nav>
+<header
+    id="app-header"
+    class="h-14"
+>
+  <nav
+      id="app-nav"
+      class="fixed z-8888 flex w-full h-14 items-center gap-2 p-4"
+  >
     <a href="/">
       home
     </a>
@@ -11,7 +18,8 @@
       dict
     </a>
   </nav>
+</header>
 
-  <div class="flex-1 h-full p-4">
+  <div class="flex-1 h-full">
     <slot/>
   </div>

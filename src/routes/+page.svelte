@@ -1,29 +1,29 @@
 <script>
 
   import httpClient from '$lib/utils/http-client'
+  import Loader from '$lib/components/loader.svelte'
   import {onMount} from 'svelte'
   import {debounce} from 'lodash-es'
 
   let search = ''
   let searchResult = null
-
   let isMobile = true
-  const obj = {}
+  let p = null
 
   const debounced = debounce(async () => {
     const params = {
       letterPattern: `^${search}`
     }
-    console.log (obj?.anton?.data)
+    p = httpClient.get('/words', {params})
 
-    searchResult = await httpClient.get('/words', {params})
+    searchResult = await p
       .then(res => res.json())
       .then(json => json.results.data)
     console.log(searchResult)
   }, 500)
 
   $: {
-    if (search) {
+    if (search?.length > 2) {
       console.log(search)
       debounced()
     }
@@ -35,6 +35,7 @@
 
   onMount(() => {
     const mediaQuery = createMatchMediaQuery(640)
+    // remove event listener on destroy?
     mediaQuery.addEventListener('change', (e) => {
       isMobile = !e.matches
     })
@@ -83,13 +84,22 @@
       method="get"
       data-name="lookup-form"
       autocomplete="off"
+      class="flex"
   >
-    <input
-        type="text"
-        name="search"
-        class="bg-transparent outline-0 border-b-2 border-slate-900"
-        bind:value={search}
+    <label
+        class="flex"
     >
+        <Loader width="{20}" />
+      <!-- {#await p }
+        <Loader width="{20}" />
+      {/await } -->
+      <input
+          type="text"
+          name="search"
+          class="bg-transparent outline-0 border-b-2 border-slate-900"
+          bind:value={search}
+      >
+    </label>
 
     <button
         class="font-bold text-lg"

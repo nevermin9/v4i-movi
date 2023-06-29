@@ -3,6 +3,10 @@ export default {
   content: ['./src/**/*.{html,js,svelte,ts}'],
   theme: {
     extend: {
+      zIndex: {
+        '8888': 8888,
+        '9999': 9999,
+      },
       colors: {
         violet: {
           600: '#806491',

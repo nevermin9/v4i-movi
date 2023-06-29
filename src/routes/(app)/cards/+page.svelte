@@ -1,109 +1,105 @@
 <script>
+  // import Board from '$lib/components/card/board.svelte'
+  import Card, {
+    generateCardTransform,
+    throwLeftAnimationClass,
+    throwRightAnimationClass,
+  } from '$lib/components/card/card.svelte'
   import {onMount} from 'svelte'
 
+  let listOfData = [
+    {id: 1, word: 'the card', translation: 'карта'},
+    {id: 2, word: 'the ant', translation: 'муравей'},
+    {id: 3, word: 'the war', translation: 'война'},
+  ]
+  let currentCard = 0
+  let cards = []
   let card = null
 
-  const screen = {
-    width: 0,
-    height: 0
-  }
-  const initScreen = () => {
-    screen.width = window.innerWidth
-    screen.height = window.innerHeight
-  }
-  let bounds = null
-  let observer = null
-  let startX = 0
-  let startY = 0
-  let cardX = 0
-  let cardY = 0
-  let gate = false
-
-  $: {
-    console.log ("startX: ", startX)
-    console.log ("cardX: ", cardX)
-    console.log ("===========")
-  }
-
-  const onDragStart = e => {
-    startX = e.clientX
-    startY = e.clientY
-    // startX = e.clientX
-    gate = true
-    //
-    observer = new IntersectionObserver((entries) => {
-      for (let entry of entries) {
-        bounds = entry.boundingClientRect
-      }
-      // observer.disconnect()
-      observer = null
-    })
-    observer.observe(card)
-  }
-
-  const onPointerMove = (e) => {
-    console.log ("onPointerMove")
-    if (gate) {
-      // cardX = Math.abs(startX - e.clientX)
-      // cardY = Math.abs(startY - e.clientY)
-      console.log("e.clientX: ", e.clientX)
-      console.log("e.clientY: ", e.clientY)
-      cardX = e.clientX - startX
-      cardY = e.clientY - startY
-    }
-  }
-
-  const onPointerUp = () => {
-    gate = false
-    console.log ("onPointerUp")
-    observer.disconnect()
-    observer = null
-    // if (observer) {
-    //   mouseX = e.clientX
-    // }
-  }
-
-
   onMount(() => {
-    initScreen()
-    // window.addEventListener('resize', initScreen)
+    card = cards[currentCard]
   })
 
+  let rotY = 0
+  let ROTATE = 180
+
+  const moveToNextCard = () => {
+    card.remove()
+    listOfData.shift()
+    currentCard += 1
+    card = cards[currentCard]
+    rotY = 0
+  }
+
+  const rotateCard = () => {
+    const rotZ = parseFloat(getComputedStyle(card).getPropertyValue('--card-rotate-z'))
+    rotY = rotY < 0 ? rotY + ROTATE : rotY - ROTATE
+    card.style.transform = generateCardTransform(rotZ, rotY)
+  }
+
+  const toLearnCard = (e) => {
+    e.preventDefault()
+    e.stopPropagation()
+    // relative to what transform translate() is calculated?
+    card.addEventListener('animationend', () => {
+      console.log('animationend')
+      moveToNextCard()
+    })
+    card.classList.add(throwLeftAnimationClass)
+  }
+
+  const markAsLearned = e => {
+    e.preventDefault()
+    e.stopPropagation()
+    card.addEventListener('animationend', () => {
+      console.log('animationend 1')
+      moveToNextCard()
+    })
+    card.classList.add(throwRightAnimationClass)
+  }
 </script>
 
-<section
-    on:pointermove={onPointerMove}
-    on:pointerdown={onDragStart}
-    on:pointerup={onPointerUp}
-    class="h-full bg-amber-900"
->
-  <div>
-    <div
-        id="card"
-        class="card w-full max-w-xs m-auto h-64 bg-blue-600"
-        style:transform={`translate(${cardX}px, ${cardY}px)`}
-        bind:this={card}
-    >
-      <div class="card__inner w-full h-full bg-blue-700 text-blue-200">
-        <span>
-          the card
-        </span>
-      </div>
-    </div>
+<section class="flex flex-col h-full">
+  <div
+      on:pointerdown={rotateCard}
+      class="relative w-full h-full"
+      style:perspective="1000px"
+  >
+    {#each listOfData as data, i (data.id)}
+      <Card
+          bind:card={cards[i]}
+          {data}
+          --card-z-index="{listOfData.length - i}"
+          --card-rotate-z="{Math.sin(Math.random() + i) * 10}deg"
+      />
+    {/each}
   </div>
+
+  <div class="flex flex-1 justify-center pb-2.5">
+    <button
+        class="p-1"
+        on:click={toLearnCard}
+    >
+      <span class="uppercase">
+        to learn
+      </span>
+    </button>
+
+    <button
+        on:click={markAsLearned}
+    >
+      mark as learned
+    </button>
+  </div>
+
+<!--  <Board {card} let:cardX let:cardY let:rotation let:opacity >-->
+<!--    <svelte:component this={card} {cardX} {cardY} {rotation} {opacity} />-->
+<!--    {#each listOfData as data, i (data.id)}-->
+<!--      <Card {data} bind:card={cards[i]} />-->
+<!--    {/each}-->
+<!--  </Board>-->
 </section>
 
 <style lang="scss">
-  .card {
-    $border-radius: .175rem;
-    $border-width: .175rem;
-
-    padding: $border-width;
-    border-radius: calc($border-radius + $border-width);
-
-    &__inner {
-      border-radius: $border-radius;
-    }
-  }
 
 </style>
