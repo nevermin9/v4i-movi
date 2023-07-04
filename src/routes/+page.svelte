@@ -49,8 +49,8 @@
   <nav class="the-page__nav self-center">
     <a
         class="block text-xl mb-2"
-        href="/dict">
-      dict
+        href="/dicts">
+      dicts
     </a>
 
     <a

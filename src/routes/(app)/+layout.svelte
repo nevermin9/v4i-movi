@@ -14,8 +14,8 @@
       about
     </a>
 
-    <a href="/dict">
-      dict
+    <a href="/dicts">
+      dicts
     </a>
   </nav>
 </header>

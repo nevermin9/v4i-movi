@@ -1,12 +1,5 @@
 <script>
-    import { onMount } from "svelte";
-
     export let width = 100
-
-    onMount(() => {
-        console.log("i am the loader")
-    })
-
 </script>
 
 <svg

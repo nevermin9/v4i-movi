@@ -13,14 +13,13 @@
         ['card', {keyPath: 'name'}],
       ]),
     })
-    await IdbManager.insert('card', {name: 'test', words: [{
-      word: 'anton',
-        translation: 'anton'
-      }]}).catch(e => e)
+    // await IdbManager.insert('card', {name: 'test', words: [{
+    //   word: 'anton',
+    //     translation: 'anton'
+    //   }]}).catch(e => e)
   })
 
 </script>
-
 
 <slot />
 
