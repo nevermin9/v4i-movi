@@ -1,19 +1,22 @@
 <script>
   import "$/style/base/1index.scss"
   import {onMount} from 'svelte'
-  import IdbClient from '$lib/utils/idb'
+  import IdbManager from '$lib/utils/idb'
 
   onMount(async () => {
-    const idbClient = new IdbClient(
-      'v4i-movi',
-      new Map([
+    await IdbManager.createClient({
+      name: 'v4i-movi',
+      version: 1,
+      objStoresConfig: new Map([
         ['word', {keyPath: 'word'}],
         ['dictionary', {keyPath: 'name'}],
         ['card', {keyPath: 'name'}],
-      ])
-    )
-
-    await idbClient.init()
+      ]),
+    })
+    await IdbManager.insert('card', {name: 'test', words: [{
+      word: 'anton',
+        translation: 'anton'
+      }]}).catch(e => e)
   })
 
 </script>
