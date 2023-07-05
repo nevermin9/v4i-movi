@@ -77,6 +77,7 @@ class IdbClient {
       request.onsuccess = e => {
         console.log(`${IdbClient.LOG_PREFIX} Database's connection opened successfully`)
         this.db = e.target.result
+        console.log(this.db)
         resolve(this.db)
       }
 
@@ -90,75 +91,39 @@ class IdbClient {
       }
     })
   }
-
-  // insert(objStoreName, data) {
-  //   return new Promise((resolve, reject) => {
-  //     const transaction = this._db.transaction(objStoreName, 'readwrite')
-  //     transaction.onerror = event => {
-  //       console.log(`${IdbClient.LOG_PREFIX} Error on transaction inserting in ${objStoreName}`)
-  //       this.onError(event)
-  //       reject(event)
-  //     }
-  //     transaction.oncomplete = event => {
-  //       console.log(`${IdbClient.LOG_PREFIX} Insertion in ${objStoreName} completed`)
-  //       resolve(this)
-  //     }
-  //     if (Array.isArray(data)) {
-  //       return Promise.allSettled(
-  //         data.map(d => {
-  //           return new Promise((resolve, reject) => {
-  //             const req = transaction.objectStore(objStoreName).add(d)
-  //             req.onerror = e => {
-  //               reject(e.target.error)
-  //             }
-  //             req.onsuccess = () => {
-  //               resolve(this)
-  //             }
-  //           })
-  //         })
-  //       ).then(results => {
-  //           const rejected = results.filter(p => p.status === 'rejected')
-  //           if (rejected.length > 0) {
-  //             reject(rejected[0].reason)
-  //           }
-  //         })
-  //     } else {
-  //       const req = transaction.objectStore(objStoreName).add(data)
-  //
-  //       req.onerror = e => {
-  //         console.log("erriror occured", e.target.error)
-  //         // reject(e.target.error)
-  //       }
-  //       req.onsuccess = () => {
-  //         console.log("add single data", data)
-  //         // resolve(this)
-  //       }
-  //     }
-  //   })
-  // }
 }
 
 
 export default class IdbManager {
   static LOG_PREFIX = '[IDB_MANAGER]'
-  static _client = null
   static ERROR_NAMES = {
     CONSTRAINT_ERR: 'ConstraintError',
   }
+  static #client = null
 
-  static async createClient(config) {
-    if (!this._client) {
-      this._client = new IdbClient(config)
+  static #getIdbClient() {
+    if (this.#client && this.#client.db) {
+      return this.#client
+    }
+
+    const check = (res, rej) => {
       try {
-        await this._client.init()
+        if (this.#client && this.#client.db) {
+          res(this.#client)
+        } else {
+          requestAnimationFrame(check.bind(null, res, rej))
+        }
       } catch (e) {
-        console.error(`${this.LOG_PREFIX} Error on init client`)
+        rej(e)
       }
     }
-    return this._client
+
+    return new Promise((resolve, reject) => {
+      requestAnimationFrame(check.bind(null, resolve, reject))
+    })
   }
 
-  static _onConstrainedError(objStoreName, data, keyPath) {
+  static #onConstrainedError(objStoreName, data, keyPath) {
     console.error(
       "%s %s store: %s, data: %O, keyPath: %s",
       this.LOG_PREFIX,
@@ -169,8 +134,22 @@ export default class IdbManager {
     )
   }
 
-  static insert(objStoreName, data) {
-    const trx = this._client.db.transaction(objStoreName, 'readwrite')
+  static async createClient(config) {
+    if (!this.#client) {
+      this.#client = new IdbClient(config)
+      try {
+        await this.#client.init()
+      } catch (e) {
+        console.error(`${this.LOG_PREFIX} Error on init client`)
+      }
+    }
+    return this.#client
+  }
+
+  static async insert(objStoreName, data) {
+    // aray of data handling
+    const client = await this.#getIdbClient()
+    const trx = client.db.transaction(objStoreName, 'readwrite')
     const store = trx.objectStore(objStoreName)
 
     const req = store.add(data)
@@ -181,15 +160,15 @@ export default class IdbManager {
 
     return new Promise((resolve, reject) => {
       trx.oncomplete = e => {
-        console.log(`${this.LOG_PREFIX}insertion completed store: ${objStoreName}`, e)
-        resolve(e)
+        console.log(`${this.LOG_PREFIX}insertion completed store: ${objStoreName}`, req.result)
+        resolve(req.result)
       }
       trx.onerror = e => {
         if (e.target.error.name === this.ERROR_NAMES.CONSTRAINT_ERR) {
           const keyPath = e.target.source.keyPath
-          this._onConstrainedError(objStoreName, data, keyPath)
+          this.#onConstrainedError(objStoreName, data, keyPath)
         }
-        reject(e)
+        reject(e.target.error)
       }
     })
   }
@@ -206,7 +185,27 @@ export default class IdbManager {
 
   }
 
-  // static getAll(objStoreName) {
-  //
-  // }
+  static async getAll(objStoreName, options = {}) {
+    const { query, count } = options
+    const client = await this.#getIdbClient()
+    console.log('client', client)
+    console.log('client.db', client.db)
+    const trx = client.db.transaction(objStoreName, 'readonly')
+    const store = trx.objectStore(objStoreName)
+    const req = store.getAll(query, count)
+
+    req.onsuccess = e => {
+      console.log (`${this.LOG_PREFIX} get all success store: ${objStoreName}`)
+    }
+
+    return new Promise((resolve, reject) => {
+      trx.onerror = e => {
+        reject(e.target.error)
+      }
+      trx.oncomplete = () => {
+        console.log (`${this.LOG_PREFIX} get all completed:`, req.result)
+        resolve(req.result)
+      }
+    })
+  }
 }

@@ -21,8 +21,12 @@
     onClose = _onClose
   }
 
-  const close = (cb = () => {}) => {
-    onClose()
+  const close = (result, cb = () => {}) => {
+    if (result) {
+      onClose({result})
+    } else {
+      onClose()
+    }
     cb()
     reset()
   }

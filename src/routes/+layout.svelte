@@ -2,18 +2,23 @@
   import "$/style/base/1index.scss"
   import {onMount} from 'svelte'
   import IdbManager from '$lib/utils/idb'
+  import Dictionary from '$lib/utils/idb/models/Dictionary.js'
   import ModalsRoot from '$lib/components/modals/components/modals-root.svelte'
+
+  const IDB_VERSION = 1
+  const IDB_NAME = "v4i-movi"
 
   onMount(async () => {
     await IdbManager.createClient({
-      name: 'v4i-movi',
-      version: 1,
+      name: IDB_NAME,
+      version: IDB_VERSION,
       objStoresConfig: new Map([
         ['word', {keyPath: 'word'}],
-        ['dictionary', {keyPath: 'name'}],
+        [Dictionary.objectStoreName, Dictionary.objectStoreConfig],
         ['card', {keyPath: 'name'}],
       ]),
     })
+    console.log("i am rooot layout")
     // await IdbManager.insert('card', {name: 'test', words: [{
     //   word: 'anton',
     //     translation: 'anton'
