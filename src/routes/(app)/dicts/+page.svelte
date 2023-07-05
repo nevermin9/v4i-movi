@@ -8,9 +8,12 @@
   let dictsNames = []
 
   const openFormCreateDict = () => {
-    open('create-dict-form', null, ({result} = {}) => {
-      if (result) {
-        dictsNames = [...dictsNames, result]
+    open({
+      name: 'create-dict-form',
+      onClose: ({result} = {}) => {
+        if (result) {
+          dictsNames = [...dictsNames, result]
+        }
       }
     })
   }

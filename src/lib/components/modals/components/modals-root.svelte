@@ -15,18 +15,14 @@
     onClose = null
   }
 
-  const open = (_name, _data, _onClose = () => {}) => {
-    name = _name
-    data = _data
-    onClose = _onClose
+  const open = ({name: n, data: d = null, onClose: fn = () => {} }) => {
+    name = n
+    data = d
+    onClose = fn
   }
 
-  const close = (result, cb = () => {}) => {
-    if (result) {
-      onClose({result})
-    } else {
-      onClose()
-    }
+  const close = ({result, cb = () => {}} = {}) => {
+    onClose(result ? {result} : {})
     cb()
     reset()
   }

@@ -48,16 +48,12 @@ class IdbClient {
         const [name, config] = arrMap[i]
         const objStore = this.db.createObjectStore(name, config)
         objStore.transaction.onerror = event => {
-          console.log(`${IdbClient.LOG_PREFIX} Error on transaction creating ${name} object store`)
           this.onError(event.target.error)
           reject(event)
         }
         objStore.transaction.oncomplete = e => {
-          console.log('object store created', name)
           const index = i
-          console.log('object store oncomplete index', index)
           if (index >= arrMap.length - 1) {
-            console.log('all object store created')
             resolve(this.db)
           }
         }

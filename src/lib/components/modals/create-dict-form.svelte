@@ -15,7 +15,7 @@
       words: []
     }
     const result = await IdbManager.insert(Dictionary.objectStoreName, new Dictionary(dict))
-    closeModal(result)
+    closeModal({result})
   }
 </script>
 
