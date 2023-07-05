@@ -2,6 +2,7 @@
   import "$/style/base/1index.scss"
   import {onMount} from 'svelte'
   import IdbManager from '$lib/utils/idb'
+  import ModalsRoot from '$lib/components/modals/components/modals-root.svelte'
 
   onMount(async () => {
     await IdbManager.createClient({
@@ -21,7 +22,9 @@
 
 </script>
 
-<slot />
+<ModalsRoot>
+  <slot />
+</ModalsRoot>
 
 <style lang="scss">
   :global(html) {

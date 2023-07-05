@@ -1,5 +1,11 @@
 <script>
+  import {getContext} from "svelte"
+  const {open} = getContext("modals-root")
+
   let dicts = []
+  const openFormCreateDict = () => {
+    open('create-dict-form', null)
+  }
 </script>
 
 
@@ -15,6 +21,7 @@
   <button
       type="button"
       class="dicts__dict-container flex bg-blue-900"
+      on:click={openFormCreateDict}
   >
       <span class="dicts__dict-container-in flex w-full h-full bg-blue-600">
         <span class="m-auto">

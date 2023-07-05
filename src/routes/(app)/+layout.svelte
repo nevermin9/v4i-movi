@@ -4,7 +4,7 @@
 >
   <nav
       id="app-nav"
-      class="fixed z-8888 flex w-full h-14 items-center gap-2 p-4"
+      class="fixed z-7777 flex w-full h-14 items-center gap-2 p-4"
   >
     <a href="/">
       home
