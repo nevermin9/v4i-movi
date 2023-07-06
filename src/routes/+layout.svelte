@@ -2,7 +2,7 @@
   import "$/style/base/1index.scss"
   import {onMount} from 'svelte'
   import IdbManager from '$lib/utils/idb'
-  import Dictionary from '$lib/utils/idb/models/Dictionary.js'
+  import {Dictionary, Word} from '$lib/utils/idb/models'
   import ModalsRoot from '$lib/components/modals/components/modals-root.svelte'
 
   const IDB_VERSION = 1
@@ -13,7 +13,7 @@
       name: IDB_NAME,
       version: IDB_VERSION,
       objStoresConfig: new Map([
-        ['word', {keyPath: 'word'}],
+        [Word.objectStoreName, Word.objectStoreConfig],
         [Dictionary.objectStoreName, Dictionary.objectStoreConfig],
         ['card', {keyPath: 'name'}],
       ]),

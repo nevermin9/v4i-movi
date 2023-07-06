@@ -2,8 +2,7 @@
   import ModalBody from "./components/modal-body.svelte"
   import ModalHeader from "./components/modal-header.svelte"
   import {getContext} from "svelte"
-  import IdbManager from '$lib/utils/idb'
-  import Dictionary from '$lib/utils/idb/models/Dictionary.js'
+  import {Dictionary} from '$lib/utils/idb/models'
 
   const {close: closeModal} = getContext("modals-root")
   let dictName = ""
@@ -14,7 +13,8 @@
       description: dictDescription,
       words: []
     }
-    const result = await IdbManager.insert(Dictionary.objectStoreName, new Dictionary(dict))
+    const dictToCreate = new Dictionary(dict)
+    const result = await Dictionary.create(dictToCreate)
     closeModal({result})
   }
 </script>

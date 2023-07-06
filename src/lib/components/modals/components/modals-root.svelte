@@ -1,5 +1,8 @@
 <script context="module">
   export const MODALS_DIR = "../../modals"
+  export const MODALS_LIST = {
+    DICT_LIST_MODAL: "dicts-list-modal"
+  }
 </script>
 
 <script>
@@ -47,5 +50,11 @@
 {#if name === 'create-dict-form'}
   {#await import(/* @vite-ignore */ `${MODALS_DIR}/create-dict-form.svelte`) then createDictForm}
     <svelte:component this={createDictForm.default} {data} />
+  {/await}
+{/if}
+
+{#if name === MODALS_LIST.DICT_LIST_MODAL}
+  {#await import(/* @vite-ignore */ `${MODALS_DIR}/${MODALS_LIST.DICT_LIST_MODAL}.svelte`) then createDictForm}
+    <svelte:component this={createDictForm.default} />
   {/await}
 {/if}

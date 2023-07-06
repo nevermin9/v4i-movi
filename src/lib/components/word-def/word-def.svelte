@@ -1,7 +1,7 @@
 <script>
-  export let wordDefinition = {}
-  let clazz = ''
-  export { clazz as class }
+  export let wordDefinition = {};
+  let clazz = '';
+  export { clazz as class };
 </script>
 
 <article class="{clazz} w-full bg-slate-300 px-2 shadow-md shadow-black">
@@ -48,20 +48,4 @@
       </tr>
     {/if}
   </table>
-
-  <div>
-    <button
-        class="p-3 uppercase bg-blue-900 text-slate-300 rounded-md"
-        type="button"
-    >
-      add to dict
-    </button>
-
-    <button
-        class="p-3 uppercase bg-blue-900 text-slate-300 rounded-md"
-        type="button"
-    >
-      add to card group
-    </button>
-  </div>
 </article>

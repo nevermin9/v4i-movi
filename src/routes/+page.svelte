@@ -14,6 +14,7 @@
     const params = {
       letterPattern: `^${search}`
     }
+    console.log("DEBOUNCED")
     p = httpClient.get('/words', {params})
 
     searchResult = await p
@@ -24,6 +25,7 @@
 
   $: {
     if (search?.length > 2) {
+      console.log("SSSSSSSSSSSSSS")
       console.log(search)
       debounced()
     }
@@ -55,7 +57,8 @@
 
     <a
         class="block text-xl"
-        href="/cards">
+        href="/cards"
+    >
       cards
     </a>
 
@@ -67,10 +70,12 @@
   </nav>
 
   {#if searchResult?.length > 0}
-    <ul class="the-page__result-list">
+    <ul data-sveltekit-preload-data="tap" class="the-page__result-list">
       {#each searchResult.reverse() as word (word)}
         <li>
-          <a href={`/word/${word}`}>
+          <a
+              href={`/word/${word}`}
+          >
             {word}
           </a>
         </li>
