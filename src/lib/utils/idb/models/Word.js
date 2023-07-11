@@ -16,4 +16,8 @@ export default class Word {
   static async save(word) {
     return IdbManager.insert(this.objectStoreName, word)
   }
+
+  static async getAllSaved() {
+    return IdbManager.getAll(this.objectStoreName)
+  }
 }

@@ -102,7 +102,10 @@ export default class IdbManager {
       return this.#client
     }
 
-    const check = (res, rej) => {
+    const ts = performance.now()
+
+    const check = (res, rej, _ts) => {
+      console.log("check",ts, _ts)
       try {
         if (this.#client && this.#client.db) {
           res(this.#client)
@@ -131,6 +134,7 @@ export default class IdbManager {
   }
 
   static async createClient(config) {
+    console.log("create indexeddb client")
     if (!this.#client) {
       this.#client = new IdbClient(config)
       try {
@@ -182,6 +186,7 @@ export default class IdbManager {
   }
 
   static async getAll(objStoreName, options = {}) {
+    console.log("getAll", objStoreName, options)
     const { query, count } = options
     const client = await this.#getIdbClient()
     console.log('client', client)

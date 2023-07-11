@@ -1,4 +1,4 @@
-import httpClient from '$lib/utils/http-client'
+import httpClient from '$lib/utils/http-client/index.js'
 
 /** @type {import('./$types').PageLoad} */
 export async function load({params}) {

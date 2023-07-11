@@ -1,5 +1,5 @@
-<script>
 
+<script>
   import httpClient from '$lib/utils/http-client'
   import Loader from '$lib/components/loader.svelte'
   import {onMount} from 'svelte'
@@ -25,7 +25,6 @@
 
   $: {
     if (search?.length > 2) {
-      console.log("SSSSSSSSSSSSSS")
       console.log(search)
       debounced()
     }
@@ -48,27 +47,6 @@
 <section
     class="the-page flex flex-col justify-end sm:justify-center items-center h-full p-4"
 >
-  <nav class="the-page__nav self-center">
-    <a
-        class="block text-xl mb-2"
-        href="/dicts">
-      dicts
-    </a>
-
-    <a
-        class="block text-xl"
-        href="/cards"
-    >
-      cards
-    </a>
-
-    <a
-        class="block text-xl"
-        href="/home">
-      home
-    </a>
-  </nav>
-
   {#if searchResult?.length > 0}
     <ul data-sveltekit-preload-data="tap" class="the-page__result-list">
       {#each searchResult.reverse() as word (word)}

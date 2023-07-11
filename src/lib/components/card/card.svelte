@@ -8,27 +8,20 @@
 
   export const throwLeftAnimationClass = 'throw-left'
   export const throwRightAnimationClass = 'throw-right'
-
 </script>
 
 <script>
-  // export let rotationZ = 0;
-  // export let rotationY = 0;
   export let data = null;
   export let card = null;
   let clazz
   export { clazz as class }
-
-
 </script>
 
-<!--style:transform={generateCardTransform(rotationZ, rotationY)}-->
 <div
     id="card"
     class="card {clazz || ''} w-full max-w-xs m-auto h-64 bg-blue-600 absolute top-1/2 left-1/2"
     bind:this={card}
 >
-<!--  <div class="card__inner-face w-full h-full bg-blue-700 text-blue-200 flex">-->
     <div class="card__face card__face--front">
       <span class="m-auto text-3xl">
         {data.translation}
@@ -40,11 +33,6 @@
         {data.word}
       </span>
     </div>
-<!--  </div>-->
-
-<!--  <div>-->
-<!--    -->
-<!--  </div>-->
 </div>
 
 <style lang="scss">

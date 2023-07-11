@@ -26,14 +26,27 @@
 
 
 <section class="dicts grid grid-cols-2 auto-rows-auto gap-1">
+  <a
+      href="/dicts/saved"
+      class="dicts__dict-container flex bg-blue-900"
+  >
+    <span class="dicts__dict-container-in flex w-full h-full bg-blue-600">
+        <span class="m-auto">
+          Saved
+        </span>
+    </span>
+  </a>
+
   {#each dictsNames as dictName (dictName)}
-    <div class="dicts__dict-container flex bg-blue-900">
-      <div class="dicts__dict-container-in flex w-full h-full bg-blue-600">
+    <a
+        href="/dicts/{dictName}"
+        class="dicts__dict-container flex bg-blue-900">
+      <span class="dicts__dict-container-in flex w-full h-full bg-blue-600">
         <span class="m-auto">
           {dictName}
         </span>
-      </div>
-    </div>
+      </span>
+    </a>
   {/each}
 
   <button

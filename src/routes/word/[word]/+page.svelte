@@ -2,7 +2,7 @@
   import {getContext} from 'svelte'
   import CheckboxContent from "$lib/components/form/checkbox-content.svelte"
   import WordDef from '$lib/components/word-def/word-def.svelte'
-  import {Word} from '$lib/utils/idb/models'
+  import {Word} from '$lib/utils/idb/models/index.js'
   // import {onMount} from 'svelte'
 
   /** @type import('./$types').PageData*/
@@ -56,7 +56,7 @@
     </i>
   </h2>
 
-  {#each data.wordData.results as result, i (i)}
+  {#each data.wordData?.results as result, i (i)}
     <CheckboxContent
         value={result.definition}
         bind:group={selectedDefs}

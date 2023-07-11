@@ -6,6 +6,7 @@
     throwRightAnimationClass,
   } from '$lib/components/card/card.svelte'
   import {onMount} from 'svelte'
+  import SButton from "$lib/components/buttons/s-button.svelte"
 
   let listOfData = [
     {id: 1, word: 'the card', translation: 'карта'},
@@ -76,14 +77,12 @@
   </div>
 
   <div class="flex flex-1 justify-center pb-2.5">
-    <button
+    <SButton
         class="p-1"
         on:click={toLearnCard}
     >
-      <span class="uppercase">
-        to learn
-      </span>
-    </button>
+      to learn
+    </SButton>
 
     <button
         on:click={markAsLearned}
