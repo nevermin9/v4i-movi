@@ -18,12 +18,15 @@ class HttpClient {
   }
 
   async get(url, options = {}) {
-    const queries = options.params ?
-      Object.keys (options.params).map (key => `${key}=${encodeURIComponent (options.params[key])}`)
-        .join ('&')
-      : '';
-    const link = `${this.baseUrl}${url}?${queries}`
+    if (!url?.length) {
+      throw new Error ('url is required');
+    }
+
+    const link = new URL(url, this.baseUrl)
+    const queries = options.params ?? {}
+    link.search = new URLSearchParams(queries).toString()
     console.log('link', link)
+    console.log('link toString', link.toString())
 
     try {
       const res =  await fetch (link, {

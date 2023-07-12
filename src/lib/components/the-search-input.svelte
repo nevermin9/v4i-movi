@@ -71,7 +71,7 @@
         >
           <a
               class="block w-full flex-1"
-              href={`/word?search=${word}`}
+              href={`/word?search=${encodeURIComponent(word)}`}
           >
             {word}
           </a>
