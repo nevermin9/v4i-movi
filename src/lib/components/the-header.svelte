@@ -35,7 +35,7 @@
 
 <header class="the-header relative h-20">
   <div
-      class="fixed z-7777 top-0 left-0 w-full h-20 p-1"
+      class="fixed z-7777 top-0 left-1/2 -translate-x-1/2 w-full max-w-md h-20 p-1"
   >
     <nav
         class="the-header__nav shadow-xl w-full h-full rounded-lg"

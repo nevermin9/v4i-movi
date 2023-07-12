@@ -1,10 +1,13 @@
 <script>
-    export let width = 100
+  let clazz
+  export { clazz as class}
+  export let width = 100
 </script>
 
 <svg
-    viewBox="0 0 {width} {width}"
-    style="max-width: {width}px"
+    viewBox="0 0 100 100"
+    style:width="{width}"
+    class="{clazz}"
 >
   <circle cx="50" cy="50" r="45"/>
 </svg>
@@ -30,7 +33,8 @@ circle {
   animation: 1.4s ease-in-out infinite both circle-animation;
   display: block;
   fill: transparent;
-  stroke: #2f3d4c;
+  //stroke: #2f3d4c;
+  stroke: currentColor;
   stroke-linecap: round;
   stroke-dasharray: 283;
   stroke-dashoffset: 280;
