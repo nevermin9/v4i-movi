@@ -1,9 +1,10 @@
 import httpClient from '$lib/utils/http-client'
 
 const wordsApi = {
-  searchForTheWords: (search, options = {}) => {
+  searchForTheWords: ({search = "", limit = 10, options = {}}) => {
     const params = {
-      letterPattern: `^${search}`
+      letterPattern: `^${search}`,
+      limit,
     }
 
     return httpClient.get('/words', {...options, params})
